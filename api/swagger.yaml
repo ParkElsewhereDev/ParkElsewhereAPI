@@ -3,20 +3,17 @@ swagger: "2.0"
 info:
   description: ""
   version: "1.6.0"
-  title: "theurbanwild"
-  contact:
-    name: "alicedigitallabs@gmail.com"
-    email: "alicedigitallabs@gmail.com"
+  title: "Park Elsewhere"
 host: "stickerservice.herokuapp.com"
 schemes:
 - "http"
 paths:
-  /events/:
+  /incidents/:
     get:
       tags:
-      - "wildlifelog"
-      description: "Loads a list of Event"
-      operationId: "getEvents"
+      - "parkelsewhere"
+      description: "Loads a list of incidents"
+      operationId: "getIncidents"
       produces:
       - "application/json"
       - "application/x-yaml"
@@ -63,10 +60,10 @@ paths:
           \ postcode"
         required: false
         type: "string"
-      - name: "thing"
+      - name: "sticker"
         in: "query"
         description: "Allows to filter the collections of result by the value of field\
-          \ thing"
+          \ sticker"
         required: false
         type: "string"
       - name: "$sort"
@@ -81,15 +78,15 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Event"
+              $ref: "#/definitions/Sticker"
         400:
           description: "Status 400"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     post:
       tags:
-      - "wildlifelog"
-      description: "Adds a Event"
-      operationId: "postEvents"
+      - "parkelsewhere"
+      description: "Adds a incident"
+      operationId: "postIncidents"
       consumes:
       - "application/json"
       - "application/x-yaml"
@@ -105,43 +102,43 @@ paths:
         name: "body"
         required: true
         schema:
-          $ref: "#/definitions/Event"
+          $ref: "#/definitions/Incident"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Event"
-      x-swagger-router-controller: "Wildlifelog"
-  /events/{eventid}:
+            $ref: "#/definitions/Incident"
+      x-swagger-router-controller: "Parkelsewhere"
+  /incidents/{incidentid}:
     get:
       tags:
-      - "wildlifelog"
-      description: "Loads a Event"
-      operationId: "getEventsEventid"
+      - "parkelsewhere"
+      description: "Loads a incident"
+      operationId: "getIncidentsIncident"
       produces:
       - "application/json"
       - "application/x-yaml"
       - "application/xml"
       - "text/xml"
       parameters:
-      - name: "eventid"
+      - name: "incidentid"
         in: "path"
-        description: "Identifier of the Event"
+        description: "Identifier of the incident"
         required: true
         type: "string"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Event"
+            $ref: "#/definitions/Incident"
         400:
           description: "Status 400"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     put:
       tags:
-      - "wildlifelog"
-      description: "Stores a Event"
-      operationId: "putEventsEventid"
+      - "parkelsewhere"
+      description: "Stores a incident"
+      operationId: "putIncidentsIncidentid"
       consumes:
       - "application/json"
       - "application/x-yaml"
@@ -153,21 +150,21 @@ paths:
       - "application/xml"
       - "text/xml"
       parameters:
-      - name: "eventid"
+      - name: "incidentid"
         in: "path"
-        description: "Identifier of the Event"
+        description: "Identifier of the Incident"
         required: true
         type: "string"
       - in: "body"
         name: "body"
         required: true
         schema:
-          $ref: "#/definitions/Event"
+          $ref: "#/definitions/Incident"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Event"
+            $ref: "#/definitions/Incident"
         400:
           description: "Bad request"
         401:
@@ -175,16 +172,16 @@ paths:
       security:
       - urbanwild_admin_auth:
         - "admin"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     delete:
       tags:
-      - "wildlifelog"
-      description: "Deletes a Event"
-      operationId: "deleteEventsEventid"
+      - "parkelsewhere"
+      description: "Deletes a incident"
+      operationId: "deleteIncidentsIncidentid"
       parameters:
-      - name: "eventid"
+      - name: "incidentid"
         in: "path"
-        description: "Identifier of the Event"
+        description: "Identifier of the incident"
         required: true
         type: "string"
       responses:
@@ -197,13 +194,13 @@ paths:
       security:
       - urbanwild_admin_auth:
         - "admin"
-      x-swagger-router-controller: "Wildlifelog"
-  /things/:
+      x-swagger-router-controller: "Parkelsewhere"
+  /stickers/:
     get:
       tags:
-      - "wildlifelog"
-      description: "Loads a list of Thing"
-      operationId: "getThings"
+      - "parkelsewhere"
+      description: "Loads a list of sticker"
+      operationId: "getStickers"
       produces:
       - "application/json"
       - "application/x-yaml"
@@ -227,10 +224,10 @@ paths:
           \ can be passed. Example: sort=age ASC,height DESC"
         required: false
         type: "string"
-      - name: "name"
+      - name: "reference"
         in: "query"
         description: "Allows to filter the collections of result by the value of field\
-          \ name"
+          \ reference"
         required: false
         type: "string"
       - name: "$page"
@@ -244,15 +241,15 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Thing"
+              $ref: "#/definitions/Sticker"
         400:
           description: "Status 400"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     post:
       tags:
-      - "wildlifelog"
-      description: "Adds a Thing"
-      operationId: "postThings"
+      - "parkelsewhere"
+      description: "Adds a sticker"
+      operationId: "postStickers"
       consumes:
       - "application/json"
       - "application/x-yaml"
@@ -268,43 +265,43 @@ paths:
         name: "body"
         required: true
         schema:
-          $ref: "#/definitions/Thing"
+          $ref: "#/definitions/Sticker"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Thing"
-      x-swagger-router-controller: "Wildlifelog"
-  /things/{thingid}:
+            $ref: "#/definitions/Sticker"
+      x-swagger-router-controller: "Parkelsewhere"
+  /stickers/{stickerid}:
     get:
       tags:
-      - "wildlifelog"
-      description: "Loads a Thing"
-      operationId: "getThingsThingid"
+      - "parkelsewhere"
+      description: "Loads a sticker"
+      operationId: "getStickersStickerid"
       produces:
       - "application/json"
       - "application/x-yaml"
       - "application/xml"
       - "text/xml"
       parameters:
-      - name: "thingid"
+      - name: "stickerid"
         in: "path"
-        description: "Identifier of the Thing"
+        description: "Identifier of the sticker"
         required: true
         type: "string"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Thing"
+            $ref: "#/definitions/Sticker"
         400:
           description: "Status 400"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     put:
       tags:
-      - "wildlifelog"
-      description: "Stores a Thing"
-      operationId: "putThingsThingid"
+      - "parkelsewhere"
+      description: "Stores a Sticker"
+      operationId: "putStickersStickerid"
       consumes:
       - "application/json"
       - "application/x-yaml"
@@ -316,21 +313,21 @@ paths:
       - "application/xml"
       - "text/xml"
       parameters:
-      - name: "thingid"
+      - name: "stickerid"
         in: "path"
-        description: "Identifier of the Thing"
+        description: "Identifier of the sticker"
         required: true
         type: "string"
       - in: "body"
         name: "body"
         required: true
         schema:
-          $ref: "#/definitions/Thing"
+          $ref: "#/definitions/Sticker"
       responses:
         200:
           description: "Status 200"
           schema:
-            $ref: "#/definitions/Thing"
+            $ref: "#/definitions/Sticker"
         400:
           description: "Bad request"
         401:
@@ -338,16 +335,16 @@ paths:
       security:
       - urbanwild_admin_auth:
         - "admin"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
     delete:
       tags:
-      - "wildlifelog"
-      description: "Deletes a Thing"
-      operationId: "deleteThingsThingid"
+      - "parkelsewhere"
+      description: "Deletes a sticker"
+      operationId: "deleteStickersStickerid"
       parameters:
-      - name: "thingid"
+      - name: "stickerid"
         in: "path"
-        description: "Identifier of the Thing"
+        description: "Identifier of the Sticker"
         required: true
         type: "string"
       responses:
@@ -360,7 +357,7 @@ paths:
       security:
       - urbanwild_admin_auth:
         - "admin"
-      x-swagger-router-controller: "Wildlifelog"
+      x-swagger-router-controller: "Parkelsewhere"
 securityDefinitions:
   urbanwild_admin_auth:
     type: "oauth2"
@@ -369,14 +366,14 @@ securityDefinitions:
     scopes:
       admin: "Full Access"
 definitions:
-  Event:
+  Incident:
     type: "object"
     required:
     - "date"
     - "lat"
     - "lon"
     - "postcode"
-    - "thing"
+    - "sticker"
     properties:
       id:
         type: "string"
@@ -389,10 +386,10 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1511395200000
-      thing:
+      sticker:
         type: "string"
-        example: "sample thing"
-        description: "This property is a reference to a Thing"
+        example: "sample sticker"
+        description: "This property is a reference to a sticker"
       lat:
         type: "number"
         format: "double"
@@ -402,17 +399,15 @@ definitions:
         format: "double"
         example: 1.1
     example: "{\"id\":\"sample id\",\"postcode\":\"M1 5GD\",\"date\":1511395200000,\"\
-      thing\":\"sample thing\",\"lat\":1.1,\"lon\":1.1}"
-  Thing:
+      sticker\":\"sample sticker\",\"lat\":1.1,\"lon\":1.1}"
+  Sticker:
     type: "object"
-    required:
-    - "name"
     properties:
       id:
         type: "string"
         example: "sample id"
         description: "Auto-generated primary key field"
-      name:
+      reference:
         type: "string"
         example: "Jay"
-    example: "{\"id\":\"sample id\",\"name\":\"Jay\"}"
+    example: "{\"id\":\"sample id\",\"reference\":\"Alice\"}"
