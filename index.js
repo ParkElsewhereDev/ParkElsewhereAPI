@@ -20,7 +20,7 @@ database.initialise(dbUrl, true);
 
 // swaggerRouter configuration
 var options = {
-  swaggerUi: path.join(__dirname, '/swagger.yaml'),
+  swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './controllers'),
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
