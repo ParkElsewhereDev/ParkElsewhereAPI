@@ -1,11 +1,11 @@
 'use strict';
 
 var utils = require('../utils/writer.js');
-var Wildlifelog = require('../service/WildlifelogService');
+var Parkelsewhere = require('../service/ParkelsewhereService');
 
-module.exports.deleteEventsEventid = function deleteEventsEventid (req, res, next) {
-  var eventid = req.swagger.params['eventid'].value;
-  Wildlifelog.deleteEventsEventid(eventid)
+module.exports.deleteIncidentsIncidentid = function deleteIncidentsIncidentid (req, res, next) {
+  var incidentid = req.swagger.params['incidentid'].value;
+  Parkelsewhere.deleteIncidentsIncidentid(incidentid)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -14,9 +14,9 @@ module.exports.deleteEventsEventid = function deleteEventsEventid (req, res, nex
     });
 };
 
-module.exports.deleteThingsThingid = function deleteThingsThingid (req, res, next) {
-  var thingid = req.swagger.params['thingid'].value;
-  Wildlifelog.deleteThingsThingid(thingid)
+module.exports.deleteStickersStickerid = function deleteStickersStickerid (req, res, next) {
+  var stickerid = req.swagger.params['stickerid'].value;
+  Parkelsewhere.deleteStickersStickerid(stickerid)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -25,7 +25,7 @@ module.exports.deleteThingsThingid = function deleteThingsThingid (req, res, nex
     });
 };
 
-module.exports.getEvents =  function getEvents (req, res, next) {
+module.exports.getIncidents =  function getIncidents (req, res, next) {
   var $page = req.swagger.params['$page'].value || null;
   var lat = req.swagger.params['lat'].value || null;
   var lon = req.swagger.params['lon'].value || null;
@@ -33,11 +33,11 @@ module.exports.getEvents =  function getEvents (req, res, next) {
   var id = req.swagger.params['id'].value || null;
   var $size = req.swagger.params['$size'].value || null;
   var postcode = req.swagger.params['postcode'].value || null;
-  var thing = req.swagger.params['thing'].value || null;
+  var sticker = req.swagger.params['sticker'].value || null;
   var $sort = req.swagger.params['$sort'].value || null;
 
   
-  var response =  Wildlifelog.getEvents($page,lat,lon,date,id,$size,postcode,thing,$sort)
+  var response =  Parkelsewhere.getIncidents($page,lat,lon,date,id,$size,postcode,sticker,$sort)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -47,9 +47,9 @@ module.exports.getEvents =  function getEvents (req, res, next) {
 
 };
 
-module.exports.getEventsEventid = function getEventsEventid (req, res, next) {
-  var eventid = req.swagger.params['eventid'].value;
-  Wildlifelog.getEventsEventid(eventid)
+module.exports.getIncidentsIncidentid = function getIncidentsIncidentid (req, res, next) {
+  var incidentid = req.swagger.params['incidentid'].value;
+  Parkelsewhere.getIncidentsIncidentid(incidentid)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -58,13 +58,13 @@ module.exports.getEventsEventid = function getEventsEventid (req, res, next) {
     });
 };
 
-module.exports.getThings = function getThings (req, res, next) {
+module.exports.getStickers = function getStickers (req, res, next) {
   var $size = req.swagger.params['$size'].value || null;
   var id = req.swagger.params['id'].value || null;
   var $sort = req.swagger.params['$sort'].value || null;
-  var name = req.swagger.params['name'].value || null;
+  var reference = req.swagger.params['reference'].value || null;
   var $page = req.swagger.params['$page'].value || null;
-  Wildlifelog.getThings($size,id,$sort,name,$page)
+  Parkelsewhere.getStickers($size,id,$sort,reference,$page)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -73,9 +73,9 @@ module.exports.getThings = function getThings (req, res, next) {
     });
 };
 
-module.exports.getThingsThingid = function getThingsThingid (req, res, next) {
-  var thingid = req.swagger.params['thingid'].value;
-  Wildlifelog.getThingsThingid(thingid)
+module.exports.getStickersStickerid = function getStickersStickerid (req, res, next) {
+  var stickerid = req.swagger.params['stickerid'].value;
+  Parkelsewhere.getStickersStickerid(stickerid)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -84,17 +84,17 @@ module.exports.getThingsThingid = function getThingsThingid (req, res, next) {
     });
 };
 
-module.exports.postEvents = function postEvents (req, res, next) {
+module.exports.postIncidents = function postIncidents (req, res, next) {
   var body = req.swagger.params['body'].value;
 
   var date = body.date || null;
   var lat = body.lat || null;
   var lon = body.lon || null;
   var postcode = body.postcode || null;
-  var thing = body.thing || null;
+  var sticker = body.sticker || null;
 
 
-  Wildlifelog.postEvents(date, lat, lon, postcode, thing)
+  Parkelsewhere.postIncidents(date, lat, lon, postcode, sticker)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -103,11 +103,11 @@ module.exports.postEvents = function postEvents (req, res, next) {
     });
 };
 
-module.exports.postThings = function postThings (req, res, next) {
+module.exports.postStickers = function postStickers (req, res, next) {
   var body = req.swagger.params['body'].value;
-  var name = body.name || null;
+  var reference = body.reference || null;
 
-  Wildlifelog.postThings(name)
+  Parkelsewhere.postStickers(reference)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -116,18 +116,18 @@ module.exports.postThings = function postThings (req, res, next) {
     });
 };
 
-module.exports.putEventsEventid = function putEventsEventid (req, res, next) {
-  var id = req.swagger.params['eventid'].value;
+module.exports.putIncidentsIncidentid = function putIncidentsIncidentid (req, res, next) {
+  var id = req.swagger.params['incidentidd'].value;
   var body = req.swagger.params['body'].value;
 
   var date = body.date || null;
   var lat = body.lat || null;
   var lon = body.lon || null;
   var postcode = body.postcode || null;
-  var thing = body.thing || null;
+  var sticker = body.sticker || null;
 
 
-  Wildlifelog.putEventsEventid(id, date, lat, lon, postcode, thing)
+  Parkelsewhere.putIncidentsIncidentid(id, date, lat, lon, postcode, sticker)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -136,12 +136,12 @@ module.exports.putEventsEventid = function putEventsEventid (req, res, next) {
     });
 };
 
-module.exports.putThingsThingid = function putThingsThingid (req, res, next) {
-  var id = req.swagger.params['thingid'].value;
+module.exports.putStickersStickerid = function putStickersStickerid (req, res, next) {
+  var id = req.swagger.params['stickerid'].value;
   var body = req.swagger.params['body'].value;
-  var name = body.name || null;
+  var reference = body.reference || null;
 
-  Wildlifelog.putThingsThingid(id,name)
+  Parkelsewhere.putStickersStickerid(id,reference)
     .then(function (response) {
       utils.writeJson(res, response);
     })

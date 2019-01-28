@@ -6,14 +6,14 @@ var errApi = require('../utils/error')
 
 
 /**
- * Deletes a Event
+ * Deletes an incident
  *
- * eventid String Identifier of the Event
+ * incidentid String Identifier of the Incident
  * no response value expected for this operation
  **/
-exports.deleteEventsEventid = function (eventid) {
+exports.deleteIncidentsIncidentid = function (incidentid) {
   return new Promise(function (resolve, reject) {
-    database.deleteEvent(eventid)
+    database.deleteIncident(incidentid)
       .then(function (result) {
         if (result) { // truthy row count > 0
           resolve(result);
@@ -40,14 +40,14 @@ exports.deleteEventsEventid = function (eventid) {
 
 
 /**
- * Deletes a Thing
+ * Deletes a sticker
  *
- * thingid String Identifier of the Thing
+ * stickerid String Identifier of the sticker
  * no response value expected for this operation
  **/
-exports.deleteThingsThingid = function (thingid) {
+exports.deleteStickersStickerid = function (stickerid) {
   return new Promise(function (resolve, reject) {
-    database.deleteThing(thingid)
+    database.deleteSticker(stickerid)
       .then(function (result) {
         if (result) { // truthy row count > 0
           resolve(result);
@@ -74,7 +74,7 @@ exports.deleteThingsThingid = function (thingid) {
 
 
 /**
- * Loads a list of Event
+ * Loads a list of incidents
  *
  * $page String Number of the page to retrieve. Integer value. (optional)
  * lat String Allows to filter the collections of result by the value of field lat (optional)
@@ -83,14 +83,14 @@ exports.deleteThingsThingid = function (thingid) {
  * id String Allows to filter the collections of result by the value of field id (optional)
  * $size String Size of the page to retrieve. Integer value (optional)
  * postcode String Allows to filter the collections of result by the value of field postcode (optional)
- * thing String Allows to filter the collections of result by the value of field thing (optional)
+ * sticker String Allows to filter the collections of result by the value of field sticker (optional)
  * $sort String Order in which to retrieve the results. Multiple sort criteria can be passed. Example: sort=age ASC,height DESC (optional)
  * returns List
  **/
-exports.getEvents = function ($page, lat, lon, date, id, $size, postcode, thing, $sort) {
+exports.getIncidents = function ($page, lat, lon, date, id, $size, postcode, sticker, $sort) {
 
   return new Promise(function (resolve, reject) {
-    database.getEvents(id, date, lat, lon, postcode, thing, $page, $size, $sort)
+    database.getIncident(id, date, lat, lon, postcode, sticker, $page, $size, $sort)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
@@ -111,21 +111,15 @@ exports.getEvents = function ($page, lat, lon, date, id, $size, postcode, thing,
 
 
 /**
- * Loads a Event
+ * Loads a incident
  *
- * eventid String Identifier of the Event
- * returns Event
+ * incident String Identifier of the incident
+ * returns incident
  **/
-exports.getEventsEventid = function (eventid) {
+exports.getIncidentsIncidentid = function (incidentid) {
   return new Promise(function (resolve, reject) {
-    database.getEvent(eventid)
-      .then(function (result) {
-        if (result && result.length > 0) {
-          resolve(result);
-        } else {
-          reject(errApi.create404Error("Couldn't find anthing matching the request URI."));
-        }
-      })
+    database.getIncident(incidentid)
+      .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
           case database.errors.DATABASE_ERROR:
@@ -145,18 +139,18 @@ exports.getEventsEventid = function (eventid) {
 
 
 /**
- * Loads a list of Thing
+ * Loads a list of sticker
  *
  * $size String Size of the page to retrieve. Integer value (optional)
  * id String Allows to filter the collections of result by the value of field id (optional)
  * $sort String Order in which to retrieve the results. Multiple sort criteria can be passed. Example: sort=age ASC,height DESC (optional)
- * name String Allows to filter the collections of result by the value of field name (optional)
+ * reference String Allows to filter the collections of result by the value of field reference (optional)
  * $page String Number of the page to retrieve. Integer value. (optional)
  * returns List
  **/
-exports.getThings = function ($size, id, $sort, name, $page) {
+exports.getStickers = function ($size, id, $sort, reference, $page) {
   return new Promise(function (resolve, reject) {
-    database.getThings(id, name, $page, $size, $sort)
+    database.getStickers(id, reference, $page, $size, $sort)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
@@ -177,48 +171,14 @@ exports.getThings = function ($size, id, $sort, name, $page) {
 
 
 /**
- * Loads a Thing
+ * Loads a sticker
  *
- * thingid String Identifier of the Thing
- * returns Thing
+ * stickerid String Identifier of the sticker
+ * returns sticker
  **/
-exports.getThingsThingid = function (thingid) {
+exports.getStickersStickerid = function (stickerid) {
   return new Promise(function (resolve, reject) {
-    database.getThing(thingid)
-      .then(function (result) {
-        if (result && result.length > 0) {
-          resolve(result);
-        } else {
-          reject(errApi.create404Error("Couldn't find anthing matching the request URI."));
-        }
-      })
-      .catch(function (e) {
-        switch (e.statusCode) {
-          case database.errors.DATABASE_ERROR:
-            // remove database specific error - will leak information.
-            reject(errApi.create500Error("something terrible happened with the database. Sorry..."));
-            break;
-          case database.errors.INTERNAL_ERROR:
-            reject(errApi.create500Error(e.message));
-            break;
-          case database.errors.PARAMETER_ERROR:
-            reject(errApi.create400Error(e.message));
-            break;
-        }
-      })
-  });
-}
-
-
-/**
- * Adds a Event
- *
- * body Event 
- * returns Event
- **/
-exports.postEvents = function (date, lat, lon, postcode, thing) {
-  return new Promise(function (resolve, reject) {
-    database.postEvent(date, lat, lon, postcode, thing)
+    database.getSticker(stickerid)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
@@ -239,14 +199,14 @@ exports.postEvents = function (date, lat, lon, postcode, thing) {
 
 
 /**
- * Adds a Thing
+ * Adds a incident
  *
- * body Thing 
- * returns Thing
+ * body incident 
+ * returns incident
  **/
-exports.postThings = function (name) {
+exports.postIncidents = function (date, lat, lon, postcode, sticker) {
   return new Promise(function (resolve, reject) {
-    database.postThing(name)
+    database.postIncident(date, lat, lon, postcode, sticker)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
@@ -267,15 +227,14 @@ exports.postThings = function (name) {
 
 
 /**
- * Stores a Event
+ * Adds a sticker
  *
- * eventid String Identifier of the Event
- * body Event 
- * returns Event
+ * body sticker 
+ * returns sticker
  **/
-exports.putEventsEventid = function (id, date, lat, lon, postcode, thing) {
+exports.postStickers = function (reference) {
   return new Promise(function (resolve, reject) {
-    database.putEvent(id,date, lat, lon, postcode, thing)
+    database.postSticker(reference)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
@@ -296,15 +255,44 @@ exports.putEventsEventid = function (id, date, lat, lon, postcode, thing) {
 
 
 /**
- * Stores a Thing
+ * Stores a incident
  *
- * thingid String Identifier of the Thing
- * body Thing 
- * returns Thing
+ * incidentid String Identifier of the incident
+ * body incident 
+ * returns incident
  **/
-exports.putThingsThingid = function (id, name) {
+exports.putIncidentsIncidentid = function (id, date, lat, lon, postcode, sticker) {
   return new Promise(function (resolve, reject) {
-    database.putThing(id,name)
+    database.putIncident(id,date, lat, lon, postcode, sticker)
+      .then(resolve)
+      .catch(function (e) {
+        switch (e.statusCode) {
+          case database.errors.DATABASE_ERROR:
+            // remove database specific error - will leak information.
+            reject(errApi.create500Error("something terrible happened with the database. Sorry..."));
+            break;
+          case database.errors.INTERNAL_ERROR:
+            reject(errApi.create500Error(e.message));
+            break;
+          case database.errors.PARAMETER_ERROR:
+            reject(errApi.create400Error(e.message));
+            break;
+        }
+      })
+  });
+}
+
+
+/**
+ * Stores a sticker
+ *
+ * stickerid String Identifier of the sticker
+ * body sticker 
+ * returns sticker
+ **/
+exports.putStickersStickerid = function (id, reference) {
+  return new Promise(function (resolve, reject) {
+    database.putSticker(id,reference)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {

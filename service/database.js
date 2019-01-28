@@ -51,16 +51,16 @@ var initialise = function (url, needsSSL) {
   }
 
 
-var getEvents = async function(id, date, lat, lon, postcode, thing, $page, $size, $sort){
+var getIncidents = async function(id, date, lat, lon, postcode, sticker, $page, $size, $sort){
   var result = null;
 
-  var stem = 'select * from events where';
+  var stem = 'select * from incidents where';
   var id_comp = '($1::text is null or id = $1) and ';
   var date_comp = '($2::bigint is null or date = $2) and ';
   var lat_comp = '($3::real is null or lat = $3) and '; // practically useless. Included for completeness
   var lon_comp = '($4::real is null or lon = $4) and '; // practically useless. Included for completeness
   var postcode_comp = "($5::text is null or postcode ilike $5) and ";
-  var thing_comp = '($6::text is null or thing = $6) ';
+  var sticker_comp = '($6::text is null or sticker = $6) ';
   
 
   var page = 0;
@@ -101,12 +101,12 @@ var getEvents = async function(id, date, lat, lon, postcode, thing, $page, $size
     lat_comp +
     lon_comp +
     postcode_comp +
-    thing_comp +
+    sticker_comp +
     sort + 
     pagination_comp + ";"; 
     
 
-  var parameters = [id, date, lat, lon, postcode, thing];
+  var parameters = [id, date, lat, lon, postcode, sticker];
   try{
     var response = await thePool.query(query,parameters);
     result = response.rows;
@@ -118,10 +118,10 @@ var getEvents = async function(id, date, lat, lon, postcode, thing, $page, $size
 }
 
 
-var getEvent = async function(id){
+var getIncident = async function(id){
   var result = null;
 
-  var stem = 'select * from events where';
+  var stem = 'select * from incidents where';
   var id_comp = '($1::text is null or id = $1)';
   
   
@@ -142,10 +142,10 @@ var getEvent = async function(id){
   return result;
 }
 
-var deleteEvent = async function(id){
+var deleteIncident = async function(id){
   var result = null;
 
-  var stem = 'delete from events where';
+  var stem = 'delete from incidents where';
   var id_comp = ' id = $1';
   
   var query = 
@@ -166,20 +166,20 @@ var deleteEvent = async function(id){
 
 
 
-var getThings = async function(id, name, $page, $size, $sort){
+var getStickers = async function(id, reference, $page, $size, $sort){
   var result = null;
 
-  var stem = 'select * from things where';
+  var stem = 'select * from stickers where';
   var id_comp = '($1::text is null or id = $1) and ';
-  var name_comp = '($2::text is null or name ilike $2)';
+  var reference_comp = '($2::text is null or reference ilike $2)';
 
 
   var page = 0;
   var size = 0;
   var sort = "";
 
-  if(name){
-    name = "%" + name + "%"; //wildcards addition
+  if(reference){
+    reference = "%" + reference + "%"; //wildcards addition
   }
 
 
@@ -209,12 +209,12 @@ var getThings = async function(id, name, $page, $size, $sort){
   var query = 
     stem + 
     id_comp +
-    name_comp +
+    reference_comp +
     sort + 
     pagination_comp + ";"; 
     
 
-  var parameters = [id, name];
+  var parameters = [id, reference];
   try{
     var response = await thePool.query(query,parameters);
     result = response.rows;
@@ -225,10 +225,10 @@ var getThings = async function(id, name, $page, $size, $sort){
   return result;
 }
 
-var getThing = async function(id){
+var getSticker = async function(id){
   var result = null;
 
-  var stem = 'select * from things where';
+  var stem = 'select * from stickers where';
   var id_comp = '($1::text is null or id = $1)';
   
   
@@ -250,10 +250,10 @@ var getThing = async function(id){
 }
 
 
-var deleteThing = async function(id){ 
+var deleteSticker = async function(id){ 
   var result = null;
 
-  var stem = 'delete from things where';
+  var stem = 'delete from stickers where';
   var id_comp = ' id = $1';
   
   var query = 
@@ -263,7 +263,7 @@ var deleteThing = async function(id){
 
   var parameters = [id];
   try{
-    // the foreign key set-up in the DB ensures we delete all associated events.
+    // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
     result = response.rowCount;
   }catch(e){
@@ -273,14 +273,14 @@ var deleteThing = async function(id){
   return result;
 }
 
-var postThing = async function(name){ 
+var postSticker = async function(reference){ 
   var result = null;
 
-  var query = 'INSERT INTO things("name") VALUES($1) RETURNING "id", "name";';
+  var query = 'INSERT INTO stickers("reference") VALUES($1) RETURNING "id", "reference";';
     
-  var parameters = [name];
+  var parameters = [reference];
   try{
-    // the foreign key set-up in the DB ensures we delete all associated events.
+    // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
     result = response.rows[0];
   }catch(e){
@@ -290,36 +290,31 @@ var postThing = async function(name){
   return result;
 }
 
-
-
-var postEvent = async function(date, lat, lon, postcode, thing){ 
+var postIncident = async function(date, lat, lon, postcode, sticker){ 
   var result = null;
 
-  var query = 'INSERT INTO events("date","lat","lon","postcode","thing") VALUES($1, $2 , $3, $4, $5) RETURNING "id", "date","lat","lon","postcode","thing";';
+  var query = 'INSERT INTO incidents("date","lat","lon","postcode","sticker") VALUES($1, $2 , $3, $4, $5) RETURNING "id", "date","lat","lon","postcode","sticker";';
     
-  var parameters = [date,lat,lon,postcode,thing];
+  var parameters = [date,lat,lon,postcode,sticker];
   try{
-    // the foreign key set-up in the DB ensures we delete all associated events.
+    // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
     result = response.rows[0];
   }catch(e){
     throw(createError(errors.PARAMETER_ERROR,e.message));
   }
-
   return result;
 }
 
 
-var putThing = async function(id, name){ 
+var putSticker = async function(id, reference){ 
   var result = null;
 
-  
-  var query = 'UPDATE things SET "name"= $2::text WHERE "id"= $1::text RETURNING "id", "name";';
+  var query = 'UPDATE stickers SET "reference"= $2::text WHERE "id"= $1::text RETURNING "id", "reference";';
 
-
-  var parameters = [id,name];
+  var parameters = [id,reference];
   try{
-    // the foreign key set-up in the DB ensures we delete all associated events.
+    // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
     result = response.rows[0];
 
@@ -334,13 +329,13 @@ var putThing = async function(id, name){
 
 
 
-var putEvent = async function(id, date, lat, lon, postcode, thing){ 
+var putIncident = async function(id, date, lat, lon, postcode, sticker){ 
   var result = null;
 
-  var query = 'UPDATE events SET "date"= $2::bigint, "lat"= $3::real, "lon"= $4::real, "postcode"= $5::text, "thing"= $6::text WHERE "id"= $1::text RETURNING "id", "date", "lat", "lon", "postcode", "thing";';  
-  var parameters = [id,date,lat,lon,postcode,thing];
+  var query = 'UPDATE incidents SET "date"= $2::bigint, "lat"= $3::real, "lon"= $4::real, "postcode"= $5::text, "sticker"= $6::text WHERE "id"= $1::text RETURNING "id", "date", "lat", "lon", "postcode", "stickers";';  
+  var parameters = [id,date,lat,lon,postcode,sticker];
   try{
-    // the foreign key set-up in the DB ensures we delete all associated events.
+    // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
     result = response.rows[0];
 
@@ -356,14 +351,14 @@ var putEvent = async function(id, date, lat, lon, postcode, thing){
   module.exports = {
     errors:errors,
     initialise: initialise,
-    getEvents:getEvents,
-    getEvent:getEvent,
-    getThings:getThings,
-    getThing,getThing,
-    deleteEvent:deleteEvent,
-    deleteThing:deleteThing,
-    postEvent:postEvent,
-    postThing:postThing,
-    putEvent: putEvent,
-    putThing: putThing
+    getIncidents:getIncidents,
+    getIncident:getIncident,
+    getStickers:getStickers,
+    getSticker,getSticker,
+    deleteIncident:deleteIncident,
+    deleteSticker:deleteSticker,
+    postIncident:postIncident,
+    postSticker:postSticker,
+    putIncident: putIncident,
+    putSticker: putSticker
   };
