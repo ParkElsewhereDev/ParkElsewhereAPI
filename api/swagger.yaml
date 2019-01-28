@@ -4,7 +4,7 @@ info:
   description: ""
   version: "1.6.0"
   title: "Park Elsewhere"
-host: "parkelsewheredb.herokuapp.com"
+host: "localhost:8080"
 schemes:
 - "http"
 paths:
@@ -170,7 +170,7 @@ paths:
         401:
           description: "Unauthorized"
       security:
-      - urbanwild_admin_auth:
+      - parkelsewhere_admin_auth:
         - "admin"
       x-swagger-router-controller: "Parkelsewhere"
     delete:
@@ -192,7 +192,7 @@ paths:
         401:
           description: "Unauthorized"
       security:
-      - urbanwild_admin_auth:
+      - parkelsewhere_admin_auth:
         - "admin"
       x-swagger-router-controller: "Parkelsewhere"
   /stickers/:
