@@ -333,7 +333,7 @@ paths:
         401:
           description: "Unauthorized"
       security:
-      - urbanwild_admin_auth:
+      - parkelsewhere_admin_auth:
         - "admin"
       x-swagger-router-controller: "Parkelsewhere"
     delete:
@@ -355,13 +355,13 @@ paths:
         401:
           description: "Unauthorized"
       security:
-      - urbanwild_admin_auth:
+      - parkelsewhere_admin_auth:
         - "admin"
       x-swagger-router-controller: "Parkelsewhere"
 securityDefinitions:
-  urbanwild_admin_auth:
+  parkelsewhere_admin_auth:
     type: "oauth2"
-    authorizationUrl: "https://urbanwild.eu.auth0.com/authorize"
+    authorizationUrl: "https://parkelsewhere.eu.auth0.com/authorize"
     flow: "implicit"
     scopes:
       admin: "Full Access"

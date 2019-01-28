@@ -15,6 +15,14 @@ const errors = {
   INTERNAL_ERROR:-3
 }
 
+var types = require('pg').types;
+
+// see https://github.com/brianc/node-pg-types#pg-types
+// pg is returning our bigint date type as a string instead of a number.
+types.setTypeParser(20, function(val) {
+  return parseInt(val);
+});
+
 var initialise = function (url, needsSSL) {
     if (needsSSL == true) {
       url += "?sslmode=require"
