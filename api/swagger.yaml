@@ -411,3 +411,8 @@ definitions:
         type: "string"
         example: "Jay"
     example: "{\"id\":\"sample id\",\"reference\":\"Alice\"}"
+
+  Access-Control-Allow-Origin: https://parkelsewheredb.herokuapp.com/docs/
+  Access-Control-Allow-Methods: POST, GET
+  Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
+  Access-Control-Max-Age: 86400
