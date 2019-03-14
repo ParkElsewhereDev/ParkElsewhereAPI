@@ -232,9 +232,9 @@ exports.postIncidents = function (date, lat, lon, postcode, sticker) {
  * body sticker 
  * returns sticker
  **/
-exports.postStickers = function (reference) {
+exports.postStickers = function (number_stickers) {
   return new Promise(function (resolve, reject) {
-    database.postSticker(reference)
+    database.postSticker(number_stickers)
       .then(resolve)
       .catch(function (e) {
         switch (e.statusCode) {
