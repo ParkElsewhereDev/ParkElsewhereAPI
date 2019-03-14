@@ -281,12 +281,12 @@ var deleteSticker = async function(id){
   return result;
 }
 
-var postSticker = async function(reference){ 
+var postSticker = async function(number_stickers){ 
   var result = null;
-
-  var query = 'INSERT INTO stickers("reference") VALUES($1) RETURNING "id", "reference";';
+//insert sticker based on number of stickers
+  var query = 'INSERT INTO stickers("number_stickers") VALUES($1) RETURNING "id", "reference";';
     
-  var parameters = [reference];
+  var parameters = [number_stickers];
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);

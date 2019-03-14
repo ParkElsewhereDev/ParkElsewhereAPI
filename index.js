@@ -55,10 +55,4 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
-
-  header("Access-Control-Allow-Origin:*");
-  header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT');
-  header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With, X-CLIENT-ID, X-CLIENT-SECRET');
-  header('Access-Control-Allow-Credentials: true');
-
 });
