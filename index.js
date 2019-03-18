@@ -11,6 +11,12 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var cors = require('cors');
 
+
+// Cross Origin Requests - must have this, as we are an API.
+// Without it, browsers running SPWAs from domains different to ours (e.g. github pages)
+// will reject HTTP requests during pre-flight check.
+app.use(cors());
+
 var serverPort = process.env.PORT || 8080;
 
 var database = require('./service/database');
@@ -45,10 +51,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
 
-  // Cross Origin Requests - must have this, as we are an API.
-  // Without it, browsers running SPWAs from domains different to ours (e.g. github pages)
-  // will reject HTTP requests during pre-flight check.
-  app.use(cors());
+
 
   // Start the server
   http.createServer(app).listen(serverPort, function () {

@@ -283,7 +283,7 @@ var deleteSticker = async function(id){
 
 var postSticker = async function(reference){ 
   var result = null;
-
+//insert sticker based on number of stickers
   var query = 'INSERT INTO stickers("reference") VALUES($1) RETURNING "id", "reference";';
     
   var parameters = [reference];
