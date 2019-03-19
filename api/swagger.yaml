@@ -358,6 +358,101 @@ paths:
       - parkelsewhere_admin_auth:
         - "admin"
       x-swagger-router-controller: "Parkelsewhere"
+
+
+
+
+
+      /apology/:
+    post:
+      tags:
+      - "parkelsewhere"
+      description: "Adds an apology"
+      operationId: "postApology"
+      consumes:
+      - "application/json"
+      - "application/x-yaml"
+      - "application/xml"
+      - "text/xml"
+      produces:
+      - "application/json"
+      - "application/x-yaml"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Apology"
+      responses:
+        200:
+          description: "Status 200"
+          schema:
+            $ref: "#/definitions/Apology"
+      x-swagger-router-controller: "Parkelsewhere"
+  /apology/{apologyid}:
+    put:
+      tags:
+      - "parkelsewhere"
+      description: "Stores an Apology"
+      operationId: "putApologyApologyid"
+      consumes:
+      - "application/json"
+      - "application/x-yaml"
+      - "application/xml"
+      - "text/xml"
+      produces:
+      - "application/json"
+      - "application/x-yaml"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "apologyid"
+        in: "path"
+        description: "Identifier of the apology"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Apology"
+      responses:
+        200:
+          description: "Status 200"
+          schema:
+            $ref: "#/definitions/Apology"
+        400:
+          description: "Bad request"
+        401:
+          description: "Unauthorized"
+      security:
+      - parkelsewhere_admin_auth:
+        - "admin"
+      x-swagger-router-controller: "Parkelsewhere"
+    delete:
+      tags:
+      - "parkelsewhere"
+      description: "Deletes a sticker"
+      operationId: "deleteStickersStickerid"
+      parameters:
+      - name: "stickerid"
+        in: "path"
+        description: "Identifier of the Sticker"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Status 200"
+        400:
+          description: "Bad request"
+        401:
+          description: "Unauthorized"
+      security:
+      - parkelsewhere_admin_auth:
+        - "admin"
+      x-swagger-router-controller: "Parkelsewhere"
 securityDefinitions:
   parkelsewhere_admin_auth:
     type: "oauth2"
@@ -404,7 +499,22 @@ definitions:
         type: "string"
         example: "sample id"
         description: "Auto-generated primary key field"
-      reference:
+      url:
         type: "string"
-        example: "Jay"
-    example: "{\"id\":\"sample id\",\"reference\":\"Alice\"}"
+    Apology:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "sample id"
+          description: "Auto-generated primary key field"
+        incident:
+          type: "string"
+          example: "sample incident"
+          description: "This property is a reference to a incident"
+        response_given:
+          type: "string"
+          example: "true"
+          description: "This determines whether a response to a sticker is given"
+      example: "{\"id\":\"sample id\",\"incident\":\"sample id\",\"response_given\":\"true\"}"
+

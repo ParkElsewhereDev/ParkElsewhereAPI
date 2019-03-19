@@ -303,7 +303,12 @@ var postSticker = async function(reference){
   }
   try{
     if(queryResult){
-      result = theStickerConfig.SPWA_URL+"?"+"park="+theStickerConfig.PARK_DOMAIN+"&"+"push="+theStickerConfig.PUSH_DOMAIN+"&"+"uuid="+uuid;
+      var url = theStickerConfig.SPWA_URL+"?"+"park="+theStickerConfig.PARK_DOMAIN+"&"+"push="+theStickerConfig.PUSH_DOMAIN+"&"+"uuid="+uuid;
+      var id = uuid;
+      result = {
+        url:url,
+        id:id
+      };
     }
   }catch(e){
     throw(createError(errors.INTERNAL_ERROR,e.message));
