@@ -406,20 +406,3 @@ definitions:
         description: "Auto-generated primary key field"
       url:
         type: "string"
-    Apology:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-          example: "sample id"
-          description: "Auto-generated primary key field"
-        incident:
-          type: "string"
-          example: "sample incident"
-          description: "This property is a reference to a incident"
-        response_given:
-          type: "string"
-          example: "true"
-          description: "This determines whether a response to a sticker is given"
-      example: "{\"id\":\"sample id\",\"incident\":\"sample id\",\"response_given\":\"true\"}"
-
