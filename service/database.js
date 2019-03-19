@@ -22,7 +22,7 @@ types.setTypeParser(20, function(val) {
   return parseInt(val);
 });
 
-var initialise = function (url, theStickerConfig, needsSSL) {
+var initialise = function (url, config, needsSSL) {
     if (needsSSL == true) {
       url += "?sslmode=require"
     }
@@ -37,9 +37,10 @@ var initialise = function (url, theStickerConfig, needsSSL) {
       connectionString: url,
       ssl: needsSSL
     };
-    theStickerConfig = theStickerConfig;
+    theStickerConfig = config;
     thePool = new Pool(theConfig);
     console.log("the pool: "+thePool!= null);
+    console.log(theStickerConfig);
   };
   
 
@@ -285,21 +286,29 @@ var postSticker = async function(reference){
   var result = null;
   var queryResult = null;
   var uuid = null;
+  console.log(theStickerConfig);
 //insert sticker based on number of stickers
   var query = 'INSERT INTO stickers("reference") VALUES($1) RETURNING "id", "reference";';
     
   var parameters = [reference];
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
-    var response = await thePool.query(query,parameters);
+    //var response = await thePool.query(query,parameters);
+    var response = {rows:[{id:"8764a104-8ef3-46ca-8230-4d3eeca6b0a8", reference: "Alice"}]};
+
     queryResult = response.rows[0];
     uuid = queryResult.id;
   }catch(e){
     throw(createError(errors.PARAMETER_ERROR,e.message));
   }
-  if(queryResult){
-    result = theStickerConfig.SPWA_URL+"?"+"park="+theStickerConfig.PARK_DOMAIN+"&"+"push="+theStickerConfig.PUSH_DOMAIN+"&"+"uuid="+uuid;
+  try{
+    if(queryResult){
+      result = theStickerConfig.SPWA_URL+"?"+"park="+theStickerConfig.PARK_DOMAIN+"&"+"push="+theStickerConfig.PUSH_DOMAIN+"&"+"uuid="+uuid;
+    }
+  }catch(e){
+    throw(createError(errors.INTERNAL_ERROR,e.message));
   }
+
   return result;
 }
 
