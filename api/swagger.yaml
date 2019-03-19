@@ -398,8 +398,11 @@ definitions:
         type: "number"
         format: "double"
         example: 1.1
+      apologised:
+        type: "bool"
+        example: false
     example: "{\"id\":\"sample id\",\"postcode\":\"M1 5GD\",\"date\":1511395200000,\"\
-      sticker\":\"sample sticker\",\"lat\":1.1,\"lon\":1.1}"
+      sticker\":\"sample sticker\",\"lat\":1.1,\"lon\":1.1,\"apologised\":\"false\"}"
   Sticker:
     type: "object"
     properties:
