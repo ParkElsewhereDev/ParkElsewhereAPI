@@ -300,10 +300,18 @@ var postSticker = async function(reference){
 
 var postIncident = async function(date, lat, lon, postcode, sticker){ 
   var result = null;
+  var query = null;
+  var parameters = null;
 
-  var query = 'INSERT INTO incidents("date","lat","lon","postcode","sticker") VALUES($1, $2 , $3, $4, $5) RETURNING "id", "date","lat","lon","postcode","sticker";';
-    
-  var parameters = [date,lat,lon,postcode,sticker];
+  if (postcode != null && lat != null && lon != null){
+    query = 'INSERT INTO incidents("date","lat","lon","postcode","sticker") VALUES($1, $2 , $3, $4, $5) RETURNING "id", "date","lat","lon","postcode","sticker";';
+    parameters = [date,lat,lon,postcode,sticker];
+  }
+  else{
+    query = 'INSERT INTO incidents("date","sticker") VALUES($1, $2) RETURNING "id", "date","lat","lon","postcode","sticker";';
+    parameters = [date,sticker];
+  }
+  
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);

@@ -370,9 +370,6 @@ definitions:
     type: "object"
     required:
     - "date"
-    - "lat"
-    - "lon"
-    - "postcode"
     - "sticker"
     properties:
       id:
