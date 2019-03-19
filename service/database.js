@@ -7,7 +7,7 @@ var stall = require('../utils/stall').stall;
 
 var thePool = null;
 var theConfig = null;
-
+var theStickerConfig = null;
 
 const errors = {
   PARAMETER_ERROR:-1,
@@ -16,18 +16,17 @@ const errors = {
 }
 
 var types = require('pg').types;
-
 // see https://github.com/brianc/node-pg-types#pg-types
 // pg is returning our bigint date type as a string instead of a number.
 types.setTypeParser(20, function(val) {
   return parseInt(val);
 });
 
-var initialise = function (url, needsSSL) {
+var initialise = function (url, theStickerConfig, needsSSL) {
     if (needsSSL == true) {
       url += "?sslmode=require"
     }
-  
+    
     if (thePool) {
       thePool.end();
     };
@@ -38,8 +37,9 @@ var initialise = function (url, needsSSL) {
       connectionString: url,
       ssl: needsSSL
     };
-  
+    theStickerConfig = theStickerConfig;
     thePool = new Pool(theConfig);
+    console.log("the pool: "+thePool!= null);
   };
   
 
@@ -283,6 +283,8 @@ var deleteSticker = async function(id){
 
 var postSticker = async function(reference){ 
   var result = null;
+  var queryResult = null;
+  var uuid = null;
 //insert sticker based on number of stickers
   var query = 'INSERT INTO stickers("reference") VALUES($1) RETURNING "id", "reference";';
     
@@ -290,11 +292,14 @@ var postSticker = async function(reference){
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);
-    result = response.rows[0];
+    queryResult = response.rows[0];
+    uuid = queryResult.id;
   }catch(e){
     throw(createError(errors.PARAMETER_ERROR,e.message));
   }
-
+  if(queryResult){
+    result = theStickerConfig.SPWA_URL+"?"+"park="+theStickerConfig.PARK_DOMAIN+"&"+"push="+theStickerConfig.PUSH_DOMAIN+"&"+"uuid="+uuid;
+  }
   return result;
 }
 
@@ -311,7 +316,7 @@ var postIncident = async function(date, lat, lon, postcode, sticker){
     query = 'INSERT INTO incidents("date","sticker") VALUES($1, $2) RETURNING "id", "date","lat","lon","postcode","sticker";';
     parameters = [date,sticker];
   }
-  
+
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
     var response = await thePool.query(query,parameters);

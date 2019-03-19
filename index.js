@@ -18,12 +18,22 @@ var cors = require('cors');
 app.use(cors());
 
 var serverPort = process.env.PORT || 8080;
-
+var PUSH_DOMAIN = process.env.PUSH_DOMAIN || null;
+var PARK_DOMAIN = process.env.PARK_DOMAIN || null;
+var SPWA_URL = process.env.SPWA_URL || null;
 var database = require('./service/database');
 var dbUrl = process.env.DATABASE_URL;
 
+if( PUSH_DOMAIN && PARK_DOMAIN && SPWA_URL){
+  console.log("Environment vars ok");
+}
+else{
+  throw("Environment variables unset");
+}
+
+var stickerURLConfig = {PUSH_DOMAIN:PUSH_DOMAIN, PARK_DOMAIN:PARK_DOMAIN, SPWA_URL:SPWA_URL};
 // database connection
-database.initialise(dbUrl, true);
+database.initialise(dbUrl, stickerURLConfig, true);
 
 // swaggerRouter configuration
 var options = {
