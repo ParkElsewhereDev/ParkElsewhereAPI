@@ -294,8 +294,7 @@ var postSticker = async function(reference){
   try{
     // the foreign key set-up in the DB ensures we delete all associated incidents.
     //var response = await thePool.query(query,parameters);
-    var response = {rows:[{id:"8764a104-8ef3-46ca-8230-4d3eeca6b0a8", reference: "Alice"}]};
-
+    var response = await thePool.query(query,parameters);
     queryResult = response.rows[0];
     uuid = queryResult.id;
   }catch(e){
