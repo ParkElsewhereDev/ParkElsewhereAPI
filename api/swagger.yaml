@@ -224,10 +224,10 @@ paths:
           \ can be passed. Example: sort=age ASC,height DESC"
         required: false
         type: "string"
-      - name: "reference"
+      - name: "url"
         in: "query"
         description: "Allows to filter the collections of result by the value of field\
-          \ reference"
+          \ url"
         required: false
         type: "string"
       - name: "$page"
