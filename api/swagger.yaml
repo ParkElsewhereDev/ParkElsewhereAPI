@@ -224,10 +224,10 @@ paths:
           \ can be passed. Example: sort=age ASC,height DESC"
         required: false
         type: "string"
-      - name: "url"
+      - name: "reference"
         in: "query"
         description: "Allows to filter the collections of result by the value of field\
-          \ url"
+          \ reference"
         required: false
         type: "string"
       - name: "$page"
@@ -404,5 +404,5 @@ definitions:
         type: "string"
         example: "sample id"
         description: "Auto-generated primary key field"
-      url:
+      reference:
         type: "string"
